@@ -59,7 +59,7 @@ export const CivicBot: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-brand-900 rounded-xl overflow-hidden border border-brand-700 shadow-2xl">
+        <div className="flex flex-col h-full bg-brand-900 rounded-xl overflow-hidden border border-brand-700 shadow-sm">
             {/* Header */}
             <div className="bg-brand-800 p-4 border-b border-brand-700 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -67,11 +67,11 @@ export const CivicBot: React.FC = () => {
                         <Bot className="w-6 h-6 text-brand-primary" />
                     </div>
                     <div>
-                        <h2 className="font-bold text-lg">CivicBot AI</h2>
-                        <p className="text-xs text-slate-400">Neutral • Fact-based • 24/7</p>
+                        <h2 className="font-bold text-lg text-slate-900">CivicBot AI</h2>
+                        <p className="text-xs text-slate-500">Neutral • Fact-based • 24/7</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                <div className="flex items-center gap-1 text-xs text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded-full">
                     <ShieldAlert className="w-3 h-3" />
                     <span>Zero Bias</span>
                 </div>
@@ -83,14 +83,14 @@ export const CivicBot: React.FC = () => {
                     <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`flex gap-3 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                             <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                                msg.role === 'user' ? 'bg-brand-accent text-brand-900' : 'bg-brand-800 border border-brand-700 text-brand-primary'
+                                msg.role === 'user' ? 'bg-brand-accent text-white' : 'bg-brand-800 border border-brand-700 text-brand-primary'
                             }`}>
                                 {msg.role === 'user' ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
                             </div>
                             <div className={`p-3 rounded-2xl ${
                                 msg.role === 'user' 
-                                    ? 'bg-brand-accent text-brand-900 rounded-tr-none' 
-                                    : 'bg-brand-800 border border-brand-700 text-slate-200 rounded-tl-none'
+                                    ? 'bg-brand-accent text-white rounded-tr-none' 
+                                    : 'bg-brand-800 border border-brand-700 text-slate-800 rounded-tl-none'
                             }`}>
                                 {/* Simple markdown-like rendering for bold text */}
                                 <p className="text-sm leading-relaxed whitespace-pre-wrap" 
@@ -110,7 +110,7 @@ export const CivicBot: React.FC = () => {
                             </div>
                             <div className="p-4 rounded-2xl bg-brand-800 border border-brand-700 rounded-tl-none flex items-center gap-2">
                                 <Loader2 className="w-4 h-4 animate-spin text-brand-primary" />
-                                <span className="text-sm text-slate-400">CivicBot is typing...</span>
+                                <span className="text-sm text-slate-500">CivicBot is typing...</span>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ export const CivicBot: React.FC = () => {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="Ask about EVMs, registration, manifestos..."
-                        className="w-full bg-brand-900 border border-brand-700 rounded-xl py-3 pl-4 pr-12 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary resize-none"
+                        className="w-full bg-brand-900 border border-brand-700 rounded-xl py-3 pl-4 pr-12 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary resize-none"
                         rows={1}
                         style={{ minHeight: '48px', maxHeight: '120px' }}
                     />
