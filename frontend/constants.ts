@@ -1,4 +1,55 @@
-import { Module, LeaderboardEntry, Badge } from './types.ts';
+import { Module, LeaderboardEntry, Badge, AlertItem } from './types.ts';
+
+export const ELECTION_ALERTS: AlertItem[] = [
+    {
+        id: 'a1',
+        title: 'Check Name & Polling Booth',
+        description: 'Verify your name on the electoral roll and locate your booth.',
+        url: 'https://electoralsearch.eci.gov.in/',
+        category: 'action',
+        icon: 'search'
+    },
+    {
+        id: 'a2',
+        title: 'Register to Vote / Link Aadhaar',
+        description: 'Fill Form 6 for new registration or Form 6B for Aadhaar linking.',
+        url: 'https://voters.eci.gov.in/',
+        category: 'action',
+        icon: 'user-plus'
+    },
+    {
+        id: 'a3',
+        title: 'Election Schedules & Deadlines',
+        description: 'Phase-wise dates, nomination windows, and polling days.',
+        url: 'https://eci.gov.in/elections/election/',
+        category: 'deadline',
+        icon: 'calendar'
+    },
+    {
+        id: 'a4',
+        title: 'ECI Press Releases & MCC',
+        description: 'Official announcements and Model Code of Conduct updates.',
+        url: 'https://eci.gov.in/press-releases/',
+        category: 'update',
+        icon: 'file-text'
+    },
+    {
+        id: 'a5',
+        title: 'Know Your Candidate (KYC)',
+        description: 'View official affidavits, criminal records, and assets of candidates.',
+        url: 'https://affidavit.eci.gov.in/',
+        category: 'action',
+        icon: 'shield'
+    },
+    {
+        id: 'a6',
+        title: 'Official Election Results',
+        description: 'Live counting trends and final result declarations.',
+        url: 'https://results.eci.gov.in/',
+        category: 'update',
+        icon: 'bar-chart'
+    }
+];
 
 export const INITIAL_MODULES: Module[] = [
     {
