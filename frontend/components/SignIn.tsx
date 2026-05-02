@@ -86,13 +86,13 @@ export const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
 
                 <div className="relative z-10">
                     
-                    {/* Replaced V icon and text with the requested image */}
-                    <div className="mb-8 rounded-xl overflow-hidden shadow-md border border-brand-700/50">
-                        <img 
-                            src="https://picsum.photos/seed/vote/800/400" 
-                            alt="Your Vote. Our Progress. A Stronger India." 
-                            className="w-full h-auto object-cover"
-                        />
+                    {/* Replaced image with the requested bold text */}
+                    <div className="mb-8 text-center">
+                        <h2 className="text-4xl md:text-5xl font-wicky uppercase leading-tight tracking-wide">
+                            <span className="text-brand-primary block">Your Vote.</span>
+                            <span className="text-brand-accent block">Our Progress.</span>
+                            <span className="text-slate-900 block">A Stronger India.</span>
+                        </h2>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
