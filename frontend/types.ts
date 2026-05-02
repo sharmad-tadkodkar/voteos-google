@@ -3,6 +3,8 @@ export interface User {
     name: string;
     college: string;
     avatar: string;
+    age: number;
+    citizenship: string;
 }
 
 export interface UserStats {
