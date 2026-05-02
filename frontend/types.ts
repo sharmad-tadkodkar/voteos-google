@@ -54,9 +54,19 @@ export interface LeaderboardEntry {
     avatar: string;
 }
 
+export interface AlertItem {
+    id: string;
+    title: string;
+    description: string;
+    url: string;
+    category: 'action' | 'update' | 'deadline';
+    icon: string;
+}
+
 export enum Tab {
     DASHBOARD = 'dashboard',
     CIVIC_BOT = 'civic_bot',
     LEARN = 'learn',
+    ALERTS = 'alerts',
     LEADERBOARD = 'leaderboard'
 }
