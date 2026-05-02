@@ -21,19 +21,19 @@ const getCategoryStyles = (category: string) => {
             return {
                 gradient: 'from-blue-500 to-indigo-600',
                 glow: 'bg-blue-500/30',
-                badge: 'bg-blue-500/20 text-blue-300'
+                badge: 'bg-blue-500/20 text-blue-600'
             };
         case 'deadline':
             return {
                 gradient: 'from-orange-500 to-red-600',
                 glow: 'bg-orange-500/30',
-                badge: 'bg-orange-500/20 text-orange-300'
+                badge: 'bg-orange-500/20 text-orange-600'
             };
         case 'update':
             return {
                 gradient: 'from-emerald-500 to-teal-600',
                 glow: 'bg-emerald-500/30',
-                badge: 'bg-emerald-500/20 text-emerald-300'
+                badge: 'bg-emerald-500/20 text-emerald-600'
             };
         default:
             return {
@@ -49,11 +49,11 @@ export const Alerts: React.FC = () => {
         <div className="space-y-6 pb-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <h2 className="text-2xl font-bold flex items-center gap-2 text-slate-900">
                         <Bell className="text-brand-accent animate-pulse" />
                         Live Updates
                     </h2>
-                    <p className="text-slate-400 text-sm mt-1">Official ECI links and critical deadlines.</p>
+                    <p className="text-slate-500 text-sm mt-1">Official ECI links and critical deadlines.</p>
                 </div>
             </div>
 
@@ -74,7 +74,7 @@ export const Alerts: React.FC = () => {
                             <div className={`absolute inset-0 rounded-[2rem] opacity-40 group-hover:opacity-100 transition-opacity duration-500 blur-xl ${styles.glow}`} />
                             
                             {/* Bubble Container */}
-                            <div className="relative flex items-center gap-4 p-5 rounded-[2rem] bg-brand-800 border border-white/5 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02]">
+                            <div className="relative flex items-center gap-4 p-5 rounded-[2rem] bg-brand-800 border border-brand-700 shadow-sm overflow-hidden transition-transform duration-300 group-hover:scale-[1.02]">
                                 
                                 {/* Icon Circle */}
                                 <div className={`flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br ${styles.gradient} flex items-center justify-center shadow-inner`}>
@@ -88,16 +88,16 @@ export const Alerts: React.FC = () => {
                                             {alert.category}
                                         </span>
                                     </div>
-                                    <h3 className="font-bold text-white text-base truncate">
+                                    <h3 className="font-bold text-slate-900 text-base truncate">
                                         {alert.title}
                                     </h3>
-                                    <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+                                    <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                                         {alert.description}
                                     </p>
                                 </div>
                                 
                                 {/* Action Icon */}
-                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-900/50 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-white/10 transition-colors">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-900 flex items-center justify-center text-slate-400 group-hover:text-slate-900 group-hover:bg-brand-700 transition-colors">
                                     <ExternalLink className="w-4 h-4" />
                                 </div>
                             </div>
