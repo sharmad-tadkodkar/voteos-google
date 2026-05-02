@@ -1,42 +1,75 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, MessageSquare, BookOpen, Trophy } from 'lucide-react';
-import { Tab, UserStats, Module } from './types.ts';
-import { INITIAL_MODULES, MOCK_LEADERBOARD } from './constants.ts';
+import { LayoutDashboard, MessageSquare, BookOpen, Trophy, LogOut } from 'lucide-react';
+import { Tab, UserStats, Module, User, LeaderboardEntry } from './types.ts';
+import { INITIAL_MODULES } from './constants.ts';
 import { Dashboard } from './components/Dashboard.tsx';
 import { CivicBot } from './components/CivicBot.tsx';
 import { Learn } from './components/Learn.tsx';
 import { Leaderboard } from './components/Leaderboard.tsx';
+import { SignIn } from './components/SignIn.tsx';
+import { initDB, getCurrentUser, getUserStats, updateUserXp, getLeaderboard, logoutUser } from './services/dbService.ts';
 
 const App: React.FC = () => {
+    const [user, setUser] = useState<User | null>(null);
     const [activeTab, setActiveTab] = useState<Tab>(Tab.DASHBOARD);
     const [stats, setStats] = useState<UserStats>({
-        xp: 1250,
-        level: 2,
-        streak: 3,
+        xp: 0,
+        level: 1,
+        streak: 1,
         badges: []
     });
     const [modules, setModules] = useState<Module[]>(INITIAL_MODULES);
+    const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
 
-    // Update leaderboard mock data when user XP changes
-    const currentLeaderboard = MOCK_LEADERBOARD.map(entry => 
-        entry.id === 'u4' ? { ...entry, xp: stats.xp } : entry
-    );
+    // Initialize DB and check for existing session on mount
+    useEffect(() => {
+        initDB();
+        const loggedInUser = getCurrentUser();
+        if (loggedInUser) {
+            setUser(loggedInUser);
+        }
+    }, []);
+
+    // Load user stats and leaderboard when user changes
+    useEffect(() => {
+        if (user) {
+            const userStats = getUserStats(user.id);
+            setStats(userStats);
+            setModules(INITIAL_MODULES); // Reset modules state for demo purposes
+            setActiveTab(Tab.DASHBOARD);
+            refreshLeaderboard();
+        }
+    }, [user]);
+
+    const refreshLeaderboard = () => {
+        setLeaderboardData(getLeaderboard());
+    };
 
     const handleCompleteModule = (moduleId: string, xpReward: number) => {
+        if (!user) return;
+
+        // Update local module state
         setModules(prev => prev.map(m => 
             m.id === moduleId ? { ...m, completed: true } : m
         ));
         
-        setStats(prev => {
-            const newXp = prev.xp + xpReward;
-            const newLevel = Math.floor(newXp / 1000) + 1;
-            return {
-                ...prev,
-                xp: newXp,
-                level: newLevel
-            };
-        });
+        // Update DB and local stats state
+        const updatedStats = updateUserXp(user.id, xpReward);
+        setStats(updatedStats);
+        
+        // Refresh leaderboard to reflect new XP
+        refreshLeaderboard();
     };
+
+    const handleSignOut = () => {
+        logoutUser();
+        setUser(null);
+    };
+
+    // If no user is logged in, show the SignIn screen
+    if (!user) {
+        return <SignIn onSignIn={setUser} />;
+    }
 
     const renderContent = () => {
         switch (activeTab) {
@@ -47,7 +80,7 @@ const App: React.FC = () => {
             case Tab.LEARN:
                 return <Learn modules={modules} onCompleteModule={handleCompleteModule} />;
             case Tab.LEADERBOARD:
-                return <Leaderboard entries={currentLeaderboard} currentUserId="u4" />;
+                return <Leaderboard entries={leaderboardData} currentUserId={user.id} />;
             default:
                 return <Dashboard stats={stats} setTab={setActiveTab} />;
         }
@@ -66,13 +99,17 @@ const App: React.FC = () => {
                         </div>
                         <span className="font-extrabold tracking-tight text-lg">VOTE OS</span>
                     </div>
-                    <div className="flex items-center gap-3 text-sm font-medium">
-                        <div className="flex items-center gap-1 text-orange-400 bg-orange-400/10 px-2 py-1 rounded-full">
-                            <span className="text-lg">🔥</span> {stats.streak}
-                        </div>
-                        <div className="flex items-center gap-1 text-brand-accent bg-brand-accent/10 px-2 py-1 rounded-full">
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1 text-sm font-medium text-brand-accent bg-brand-accent/10 px-2 py-1 rounded-full">
                             <span className="text-lg">⚡</span> {stats.xp}
                         </div>
+                        <button 
+                            onClick={handleSignOut}
+                            className="p-2 text-slate-400 hover:text-white hover:bg-brand-800 rounded-full transition-colors"
+                            title="Sign Out"
+                        >
+                            <LogOut className="w-5 h-5" />
+                        </button>
                     </div>
                 </header>
 
