@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, MessageSquare, BookOpen, Trophy, LogOut } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, BookOpen, Trophy, LogOut, Bell } from 'lucide-react';
 import { Tab, UserStats, Module, User, LeaderboardEntry } from './types.ts';
 import { INITIAL_MODULES } from './constants.ts';
 import { Dashboard } from './components/Dashboard.tsx';
 import { CivicBot } from './components/CivicBot.tsx';
 import { Learn } from './components/Learn.tsx';
 import { Leaderboard } from './components/Leaderboard.tsx';
+import { Alerts } from './components/Alerts.tsx';
 import { SignIn } from './components/SignIn.tsx';
 import { initDB, getCurrentUser, getUserStats, updateUserXp, getLeaderboard, logoutUser } from './services/dbService.ts';
 
@@ -79,6 +80,8 @@ const App: React.FC = () => {
                 return <CivicBot />;
             case Tab.LEARN:
                 return <Learn modules={modules} onCompleteModule={handleCompleteModule} />;
+            case Tab.ALERTS:
+                return <Alerts />;
             case Tab.LEADERBOARD:
                 return <Leaderboard entries={leaderboardData} currentUserId={user.id} />;
             default:
@@ -119,7 +122,7 @@ const App: React.FC = () => {
                 </main>
 
                 {/* Bottom Navigation */}
-                <nav className="absolute bottom-0 w-full bg-brand-800/90 backdrop-blur-lg border-t border-brand-700 pb-safe pt-2 px-4 z-20">
+                <nav className="absolute bottom-0 w-full bg-brand-800/90 backdrop-blur-lg border-t border-brand-700 pb-safe pt-2 px-2 z-20">
                     <div className="flex justify-between items-center max-w-sm mx-auto pb-4">
                         <NavItem 
                             icon={<LayoutDashboard />} 
@@ -138,6 +141,12 @@ const App: React.FC = () => {
                             label="Learn" 
                             isActive={activeTab === Tab.LEARN} 
                             onClick={() => setActiveTab(Tab.LEARN)} 
+                        />
+                        <NavItem 
+                            icon={<Bell />} 
+                            label="Alerts" 
+                            isActive={activeTab === Tab.ALERTS} 
+                            onClick={() => setActiveTab(Tab.ALERTS)} 
                         />
                         <NavItem 
                             icon={<Trophy />} 
@@ -163,7 +172,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onClick }) => 
     return (
         <button 
             onClick={onClick}
-            className={`flex flex-col items-center justify-center w-16 h-14 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl transition-all duration-200 ${
                 isActive 
                     ? 'text-brand-accent bg-brand-accent/10' 
                     : 'text-slate-400 hover:text-slate-200 hover:bg-brand-700/50'
