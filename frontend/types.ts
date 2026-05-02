@@ -1,3 +1,10 @@
+export interface User {
+    id: string;
+    name: string;
+    college: string;
+    avatar: string;
+}
+
 export interface UserStats {
     xp: number;
     level: number;
