@@ -75,17 +75,17 @@ const App: React.FC = () => {
     const renderContent = () => {
         switch (activeTab) {
             case Tab.DASHBOARD:
-                return <Dashboard stats={stats} setTab={setActiveTab} />;
+                return <Dashboard setTab={setActiveTab} />;
             case Tab.CIVIC_BOT:
                 return <CivicBot />;
             case Tab.LEARN:
-                return <Learn modules={modules} onCompleteModule={handleCompleteModule} />;
+                return <Learn modules={modules} onCompleteModule={handleCompleteModule} stats={stats} />;
             case Tab.ALERTS:
                 return <Alerts />;
             case Tab.LEADERBOARD:
                 return <Leaderboard entries={leaderboardData} currentUserId={user.id} />;
             default:
-                return <Dashboard stats={stats} setTab={setActiveTab} />;
+                return <Dashboard setTab={setActiveTab} />;
         }
     };
 
