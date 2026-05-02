@@ -12,15 +12,15 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ entries, currentUserId
     const sortedEntries = [...entries].sort((a, b) => b.xp - a.xp);
 
     return (
-        <div className="bg-brand-800 rounded-xl border border-brand-700 overflow-hidden">
+        <div className="bg-brand-800 rounded-xl border border-brand-700 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-brand-700 bg-brand-900/50">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 bg-yellow-500/20 rounded-lg">
-                        <Trophy className="w-6 h-6 text-yellow-500" />
+                        <Trophy className="w-6 h-6 text-yellow-600" />
                     </div>
-                    <h2 className="text-2xl font-bold">National Leaderboard</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">National Leaderboard</h2>
                 </div>
-                <p className="text-slate-400 text-sm flex items-center gap-2">
+                <p className="text-slate-500 text-sm flex items-center gap-2">
                     <Users className="w-4 h-4" /> Competing with peers across India
                 </p>
             </div>
@@ -32,12 +32,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ entries, currentUserId
                         <div 
                             key={entry.id}
                             className={`flex items-center p-4 border-b border-brand-700/50 last:border-0 transition-colors ${
-                                isCurrentUser ? 'bg-brand-primary/10' : 'hover:bg-brand-700/30'
+                                isCurrentUser ? 'bg-brand-primary/10' : 'hover:bg-brand-900/50'
                             }`}
                         >
                             <div className="w-8 font-bold text-slate-500 flex justify-center">
                                 {index === 0 ? <Medal className="w-6 h-6 text-yellow-500" /> :
-                                 index === 1 ? <Medal className="w-6 h-6 text-slate-300" /> :
+                                 index === 1 ? <Medal className="w-6 h-6 text-slate-400" /> :
                                  index === 2 ? <Medal className="w-6 h-6 text-amber-600" /> :
                                  `#${index + 1}`}
                             </div>
@@ -49,10 +49,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ entries, currentUserId
                             />
                             
                             <div className="flex-1">
-                                <h3 className={`font-bold ${isCurrentUser ? 'text-brand-primary' : 'text-white'}`}>
+                                <h3 className={`font-bold ${isCurrentUser ? 'text-brand-primary' : 'text-slate-900'}`}>
                                     {entry.name}
                                 </h3>
-                                <p className="text-xs text-slate-400">{entry.college}</p>
+                                <p className="text-xs text-slate-500">{entry.college}</p>
                             </div>
                             
                             <div className="text-right">
