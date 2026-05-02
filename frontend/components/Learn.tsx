@@ -5,13 +5,14 @@ import {
     TrendingUp, Search, FileText, Camera, MapPin, 
     Smartphone, Image as ImageIcon, Globe, RotateCw, XCircle,
     Shield, AlertTriangle, Calendar, Map, Users, Star, Video,
-    BarChart, Target, UserCheck, Slash
+    BarChart, Target, UserCheck, Slash, Flame
 } from 'lucide-react';
-import { Module } from '../types.ts';
+import { Module, UserStats } from '../types.ts';
 
 interface LearnProps {
     modules: Module[];
     onCompleteModule: (moduleId: string, xp: number) => void;
+    stats: UserStats;
 }
 
 // Helper to render dynamic icons based on string name
@@ -47,7 +48,7 @@ const renderIcon = (iconName?: string, className?: string) => {
     }
 };
 
-export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
+export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule, stats }) => {
     const [activeModule, setActiveModule] = useState<Module | null>(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isSimulating, setIsSimulating] = useState(false);
@@ -58,6 +59,8 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
     const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
     const minSwipeDistance = 50;
+    const xpForNextLevel = stats.level * 1000;
+    const progress = (stats.xp / xpForNextLevel) * 100;
 
     const handleStartModule = (module: Module) => {
         if (module.completed) return;
@@ -128,7 +131,7 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                 : 'animate-in fade-in zoom-in-95 duration-300';
 
         return (
-            <div className="h-full flex flex-col bg-brand-800 rounded-xl border border-brand-700 p-6 relative overflow-hidden shadow-2xl">
+            <div className="h-full flex flex-col bg-brand-800 rounded-xl border border-brand-700 p-6 relative overflow-hidden shadow-xl">
                 {/* Progress Bar */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-900">
                     <div 
@@ -140,7 +143,7 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                 <div className="flex justify-between items-center mb-6 mt-2">
                     <button 
                         onClick={() => setActiveModule(null)}
-                        className="text-sm text-slate-400 hover:text-white flex items-center gap-1"
+                        className="text-sm text-slate-500 hover:text-slate-900 flex items-center gap-1"
                     >
                         <ChevronLeft className="w-4 h-4" /> Exit Deck
                     </button>
@@ -161,8 +164,8 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                             {renderIcon(slide.iconName)}
                         </div>
                         
-                        <h2 className="text-2xl font-bold mb-4 text-white">{slide.title}</h2>
-                        <p className="text-slate-300 text-lg leading-relaxed">
+                        <h2 className="text-2xl font-bold mb-4 text-slate-900">{slide.title}</h2>
+                        <p className="text-slate-600 text-lg leading-relaxed">
                             {slide.content}
                         </p>
                     </div>
@@ -184,7 +187,7 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                         {currentSlide > 0 && (
                             <button
                                 onClick={handlePrevSlide}
-                                className="p-4 bg-brand-900 text-white rounded-xl hover:bg-brand-700 transition-colors border border-brand-700"
+                                className="p-4 bg-brand-900 text-slate-900 rounded-xl hover:bg-brand-700 transition-colors border border-brand-700"
                             >
                                 <ChevronLeft className="w-6 h-6" />
                             </button>
@@ -193,7 +196,7 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                         {!isLastSlide ? (
                             <button
                                 onClick={handleNextSlide}
-                                className="flex-1 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-400 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/20"
+                                className="flex-1 py-4 bg-brand-primary text-white font-bold rounded-xl hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/20"
                             >
                                 Next <ChevronRight className="w-5 h-5" />
                             </button>
@@ -201,7 +204,7 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                             <button
                                 onClick={handleComplete}
                                 disabled={isSimulating}
-                                className="flex-1 py-4 bg-brand-accent text-brand-900 font-bold rounded-xl hover:bg-emerald-400 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-brand-accent/20"
+                                className="flex-1 py-4 bg-brand-accent text-white font-bold rounded-xl hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-brand-accent/20"
                             >
                                 {isSimulating ? (
                                     <>
@@ -224,13 +227,55 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="bg-brand-800 p-4 rounded-xl border border-brand-700 flex flex-col items-center justify-center text-center shadow-sm">
+                    <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mb-2">
+                        <Flame className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div className="text-2xl font-bold text-slate-900">{stats.streak} Days</div>
+                    <div className="text-xs text-slate-500 uppercase tracking-wider">Current Streak</div>
+                </div>
+                
+                <div className="bg-brand-800 p-4 rounded-xl border border-brand-700 flex flex-col items-center justify-center text-center shadow-sm">
+                    <div className="w-12 h-12 bg-brand-accent/20 rounded-full flex items-center justify-center mb-2">
+                        <Zap className="w-6 h-6 text-brand-accent" />
+                    </div>
+                    <div className="text-2xl font-bold text-slate-900">{stats.xp}</div>
+                    <div className="text-xs text-slate-500 uppercase tracking-wider">Total XP</div>
+                </div>
+
+                <div className="bg-brand-800 p-4 rounded-xl border border-brand-700 flex flex-col items-center justify-center text-center col-span-2 md:col-span-1 shadow-sm">
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mb-2">
+                        <Target className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="text-2xl font-bold text-slate-900">Level {stats.level}</div>
+                    <div className="text-xs text-slate-500 uppercase tracking-wider">Civic Rank</div>
+                </div>
+            </div>
+
+            {/* Level Progress */}
+            <div className="bg-brand-800 p-5 rounded-xl border border-brand-700 shadow-sm">
+                <div className="flex justify-between text-sm mb-2">
+                    <span className="font-medium text-slate-600">Progress to Level {stats.level + 1}</span>
+                    <span className="text-brand-accent font-bold">{stats.xp} / {xpForNextLevel} XP</span>
+                </div>
+                <div className="h-3 bg-brand-900 rounded-full overflow-hidden border border-brand-700">
+                    <div 
+                        className="h-full bg-gradient-to-r from-brand-primary to-brand-accent transition-all duration-1000 ease-out"
+                        style={{ width: `${Math.min(progress, 100)}%` }}
+                    />
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-8">
                 <div>
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <h2 className="text-2xl font-bold flex items-center gap-2 text-slate-900">
                         <Award className="text-brand-accent" />
                         Civic XP Decks
                     </h2>
-                    <p className="text-slate-400 text-sm">Swipe through cards to level up your knowledge.</p>
+                    <p className="text-slate-500 text-sm">Swipe through cards to level up your knowledge.</p>
                 </div>
             </div>
 
@@ -239,24 +284,24 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                     <div 
                         key={module.id}
                         onClick={() => handleStartModule(module)}
-                        className={`p-5 rounded-xl border transition-all cursor-pointer relative overflow-hidden ${
+                        className={`p-5 rounded-xl border transition-all cursor-pointer relative overflow-hidden shadow-sm ${
                             module.completed 
                                 ? 'bg-brand-900/50 border-brand-700 opacity-75' 
-                                : 'bg-brand-800 border-brand-700 hover:border-brand-primary hover:shadow-lg hover:shadow-brand-primary/10'
+                                : 'bg-brand-800 border-brand-700 hover:border-brand-primary hover:shadow-md hover:shadow-brand-primary/10'
                         }`}
                     >
                         {module.completed && (
-                            <div className="absolute inset-0 bg-brand-900/40 backdrop-blur-[1px] z-10 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                <span className="bg-brand-800 text-white px-3 py-1 rounded-full text-sm font-medium border border-brand-700">
+                            <div className="absolute inset-0 bg-brand-900/60 backdrop-blur-[1px] z-10 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <span className="bg-brand-800 text-slate-900 px-3 py-1 rounded-full text-sm font-medium border border-brand-700">
                                     Completed
                                 </span>
                             </div>
                         )}
                         <div className="flex justify-between items-start mb-3">
                             <span className={`text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider ${
-                                module.category === 'basics' ? 'bg-blue-500/20 text-blue-400' :
-                                module.category === 'fact-check' ? 'bg-orange-500/20 text-orange-400' :
-                                'bg-purple-500/20 text-purple-400'
+                                module.category === 'basics' ? 'bg-blue-500/20 text-blue-600' :
+                                module.category === 'fact-check' ? 'bg-red-500/20 text-red-600' :
+                                'bg-orange-500/20 text-orange-600'
                             }`}>
                                 {module.category}
                             </span>
@@ -268,8 +313,8 @@ export const Learn: React.FC<LearnProps> = ({ modules, onCompleteModule }) => {
                                 </span>
                             )}
                         </div>
-                        <h3 className="font-bold text-lg mb-1">{module.title}</h3>
-                        <p className="text-sm text-slate-400 mb-4 line-clamp-2">{module.description}</p>
+                        <h3 className="font-bold text-lg mb-1 text-slate-900">{module.title}</h3>
+                        <p className="text-sm text-slate-500 mb-4 line-clamp-2">{module.description}</p>
                         
                         <div className="flex items-center justify-between text-sm">
                             <span className="text-slate-500 flex items-center gap-1">
