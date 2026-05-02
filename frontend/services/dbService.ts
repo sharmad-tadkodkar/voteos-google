@@ -30,7 +30,9 @@ export const initDB = () => {
                 id: entry.id,
                 name: entry.name,
                 college: entry.college,
-                avatar: entry.avatar
+                avatar: entry.avatar,
+                age: 20,
+                citizenship: 'Indian'
             };
             db.stats[entry.id] = {
                 xp: entry.xp,
@@ -44,7 +46,7 @@ export const initDB = () => {
 };
 
 // Login or Create User
-export const loginUser = (name: string, college: string): User => {
+export const loginUser = (name: string, college: string, age: number, citizenship: string): User => {
     const db = getDB();
     
     // Simulate SQL: SELECT * FROM users WHERE name = ? AND college = ?
@@ -53,6 +55,12 @@ export const loginUser = (name: string, college: string): User => {
     );
 
     if (existingUser) {
+        // Update age and citizenship if they changed
+        existingUser.age = age;
+        existingUser.citizenship = citizenship;
+        db.users[existingUser.id] = existingUser;
+        saveDB(db);
+        
         localStorage.setItem(CURRENT_USER_KEY, existingUser.id);
         return existingUser;
     }
@@ -63,7 +71,9 @@ export const loginUser = (name: string, college: string): User => {
         id,
         name,
         college,
-        avatar: `https://picsum.photos/100/100?random=${Math.floor(Math.random() * 1000)}`
+        avatar: `https://picsum.photos/100/100?random=${Math.floor(Math.random() * 1000)}`,
+        age,
+        citizenship
     };
     
     db.users[id] = newUser;
